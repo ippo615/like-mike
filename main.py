@@ -1,6 +1,7 @@
 import json
-import dateutil.parser
+import csv
 
+import dateutil.parser
 import dweepy
 
 thingName = 'tight-respect'
@@ -80,5 +81,8 @@ for dweep in reversed(dweepy.get_dweets_for(thingName)):
 	#if 'major_thingy' in d.content:
 	#	print d.content['major_thingy']
 
-for t in data:
-	print t
+with open('data.csv', 'w') as csvfile:
+	writer = csv.DictWriter(csvfile, 'x,y,z,created,thing'.split(','))
+	writer.writeheader()
+	for row in data:
+		writer.writerow( row.as_dict() )
