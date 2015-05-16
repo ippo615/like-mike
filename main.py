@@ -1,48 +1,44 @@
 import json
 import csv
+import threading
 
 import dweepy
 
 from tilt import Tilt
 
-thingName = 'ill-fated-anger'
-eventPostfix = 'events'
+def one_round(thing='default-thing'):
+	samples = []
+	index = 0
+	for dweet in dweepy.listen_for_dweets_from(thing):
+		tilt = Tilt( dweet )
+		if tilt.isValid:
+			index += 1
+			samples.append( tilt )
 
-eventName = '%s-%s' % (
-	thingName,
-	eventPostfix
-)
+	print '%5i: %s' % (
+		index,
+		tilt
+	)
 
-# Some orientation guidelines (note +-180 is close to +- 0):
-# upsidedown: 86.0, 2.0, 50.0
-# upright: -86.0, 2.0, 70.0
-# flat (screen up): -4.0, 2.0, 260.0
-# flat (screen down): 179.0, -3.0, 300.0
-# rightside down: -4.0, -83.0, 26.0
-# leftside down: -179.0, 88.0, 296.0
+if __name__ == '__main__':
+	# Wait for a message
+	print 'Waiting for start...'
+	for dweet in dweepy.listen_for_dweets_from('si-hacks-2015-05-16-blah-start'):
+		print dweet
+		try:
+			runner = threading.Thread(
+				target=one_round,
+				kwargs=dict(
+					thing=dweet['content']['thing']
+				)
+			)
+			runner.start()
+			runner.join( 1000 )
+		except:
+			print 'error'
+			raise
 
-#dweepy.dweet_for(
-#	eventName, {
-#	'major_thingy': 'start'
-#})
+		print 'Waiting for another start...'
 
-data = []
-for dweep in reversed(dweepy.get_dweets_for(thingName)):
-	#print dweep
-	#print dateutil.parser.parse( dweep['created'] )
-	tilt = Tilt( dweep )
-	if tilt.isValid:
-		data.append( tilt )
-
-	#if 'major_thingy' in d.content:
-	#	print d.content['major_thingy']
-
-for row in data:
-	print row
-
-def dumpToCsv(data):
-	with open('data.csv', 'w') as csvfile:
-		writer = csv.DictWriter(csvfile, 'x,y,z,created,thing'.split(','))
-		writer.writeheader()
-		for row in data:
-			writer.writerow( row.as_dict() )
+		#	threading.thread()
+		#	run_that_stuff()
