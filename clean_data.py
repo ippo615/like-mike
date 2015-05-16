@@ -44,11 +44,11 @@ df['tilt_y'] = ''
 
 for rownum, row in df.iterrows():
 	# print row
-	tilt_z = re.findall(r'tilt_z\': (\d*)', str(row))
+	tilt_z = re.findall(r'tilt_z\': (\d*)', str(row['content']))
 	df.loc[rownum, 'tilt_z']= tilt_z
-	tilt_x = re.findall(r'tilt_x\': (\d*)', str(row))
+	tilt_x = re.findall(r'tilt_x\': (\d*)', str(row['content']))
 	df.loc[rownum, 'tilt_x']= tilt_x
-	tilt_y = re.findall(r'tilt_y\': (\d*)', str(row))
+	tilt_y = re.findall(r'tilt_y\': (\d*)', str(row['content']))
 	df.loc[rownum, 'tilt_y']= tilt_x
 
 
@@ -68,5 +68,24 @@ for rownum, row in df.iterrows():
 	except:
 		# print e
 		next
+
+#loop across the 4 rows in a seocnd in compute the difference 
+
+##replace 
+
+df['diff_x']
+
+for rownum, row in df.iterrows():
+	i = 0
+	if rownum ==0:
+		next
+	else:
+		print row['tilt_x']
+		print type(row['tilt_x'])
+			if type(row['tilt_x'] == <type 'float'> & )
+		diff_x = row['tilt_x'] - df[rownum-1]['tilt_x']
+		df.loc[rownum, 'diff_x']= diff_x
+
+
 
 
