@@ -35,6 +35,9 @@ test2 = pd.DataFrame(test)
 # df = pd.concat(df2, axis=1)
 df = pd.DataFrame(test2)
 
+
+# separate the tilt values into separate columns
+
 df['tilt_z'] = ''
 df['tilt_x'] = ''
 df['tilt_y'] = ''
@@ -49,12 +52,21 @@ for rownum, row in df.iterrows():
 	df.loc[rownum, 'tilt_y']= tilt_x
 
 
-# type(df['tilt_z'][4])
-		#print type(tilt_z[0])
-	# try:
-	# 	tilt_z = float(tilt_z[0])
-	# 	print tilt_z
-	# 	df.loc[rownum, 'tilt_z']= tilt_z
-	# except: # catch *all* exceptions
-	# 	e = sys.exc_info()[0]
-	# 	write_to_page( "<p>Error: %s</p>" % e )
+#convert to numeric values
+
+for rownum, row in df.iterrows():
+	try:
+		if len(row['tilt_z'])== 1:
+			tilt_z = float(row['tilt_z'][0])
+			df.loc[rownum, 'tilt_z']= tilt_z
+		if len(row['tilt_x']) == 1:
+			tilt_x = float(row['tilt_x'][0])
+			df.loc[rownum, 'tilt_x']= tilt_x
+		if len(row['tilt_y'])==1:
+			tilt_y = float(row['tilt_y'][0])
+			df.loc[rownum, 'tilt_y']= tilt_y
+	except:
+		# print e
+		next
+
+
