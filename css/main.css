@@ -107,6 +107,12 @@ form{
   font-color:black;
 }
 
+#welcome-text{
+
+
+  margin-top:100px;
+  font-color:white;
+}
 #icons{
 
     background-color: orange;
@@ -195,6 +201,16 @@ form{
 /* ==========================================================================
    Helper classes
    ========================================================================== */
+
+.content{
+    font-family: 'Roboto', sans-serif;
+    font-size:25px;
+    font-color:white;
+    margin-top:100px;
+
+
+}
+
 
 .ir {
     background-color: transparent;
