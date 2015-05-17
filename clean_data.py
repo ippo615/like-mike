@@ -6,14 +6,22 @@ import re
 import sys
 
 
-df = pd.read_csv('data-set1.csv')
+df_name = sys.argv[1]
+metric = sys.argv[2]
+df =pd.read_csv(df_name)
+unique_clientname = (df.groupby('thing').count().reset_index())#will be used as output file name
+clientname = unique_clientname['thing'][0]
+total_name = str(clientname + "_total.csv")
+# df = pd.read_csv('data-set1.csv')
 
+
+##################
+#Compute all client stats
+##################
 
 df['diff_x'] = ''
 df['diff_y'] = ''
 df['diff_z'] = ''
-
-#find difference
 
 for rownum, row in df.iterrows():
 	if rownum ==0:
@@ -62,7 +70,7 @@ df['second'] = df['second'].convert_objects(convert_numeric=True)
 client = df.groupby(['thing', 'hour', 'minute']).mean().reset_index()
 
 
-client.to_csv('data-set1_agg.csv')
+client.to_csv(str(clientname + ".csv"))
 
 
 ####import athelete file
@@ -71,50 +79,82 @@ mike = pd.read_csv('mike.csv')
 #merge client data with athlete
 total = pd.merge(client, mike, how='left', on=['hour', 'minute'])
 
-def find_performance(column_client, column_athlete):
-	for rownum, row in total.iterrows():
-		column_client = column_client.convert_objects(convert_numeric=True)
-		column_athlete = column_athlete.convert_objects(convert_numeric=True)
-		total['likemike'] = (column_client/column_athlete)*100
-		df.loc[rownum, 'likemike'] = total['likemike']
-
-find_performance(total['diff_x'], total['diff_x_a'])
-
-
-total['diff_x'] = total['diff_x'].convert_objects(convert_numeric=True)
-total['diff_x_a'] = total['diff_x_a'].convert_objects(convert_numeric=True)
-
 total['likemike'] = ''
 total['likemike_comment'] = ''
 
-for rownum, row in total.iterrows():
-	if row['diff_x_a'] != 0:
-		row['likemike'] = (row['diff_x']/row['diff_x_a'])*100
-		row['likemike'] = abs(row['likemike'])
-		total.loc[rownum, 'likemike'] = row['likemike']
-		if row['likemike'] < 20:
-			result = str("try harder")
-			total.loc[rownum, 'likemike_comment'] = result
-			print result
-		elif (row['likemike']>20 and row['likemike']<50):
-			result = str("you are getting there")
-			total.loc[rownum, 'likemike_comment'] = result
-			print result
-		elif (row['likemike']>50 and row['likemike']<70):
-			result = str("guess what, you are really good")
-			total.loc[rownum, 'likemike_comment'] = result
-			print result
-		elif (row['likemike']>70 and row['likemike']<100):
-			result = str("you rock like Mike")
-			total.loc[rownum, 'likemike_comment'] = result
-			print result
-		elif (row['likemike']<100):
-			result = str("OMG!!! You have outperformed Mike")
-			total.loc[rownum, 'likemike_comment'] = result
-			print result
+
+def find_performance(column_client, column_athlete):
+	total[column_client] = total[column_client].convert_objects(convert_numeric=True)
+	total[column_athlete] = total[column_athlete].convert_objects(convert_numeric=True)
+	for rownum, row in total.iterrows():
+		if row[column_athlete] != 0:
+			row['likemike'] = (row[column_client]/row[column_athlete])*100
+			row['likemike'] = abs(row['likemike'])
+			total.loc[rownum, 'likemike'] = row['likemike']
+			if row['likemike'] < 20:
+				result = str("try harder")
+				total.loc[rownum, 'likemike_comment'] = result
+				print result
+			elif (row['likemike']>20 and row['likemike']<50):
+				result = str("you are getting there")
+				total.loc[rownum, 'likemike_comment'] = result
+				print result
+			elif (row['likemike']>50 and row['likemike']<70):
+				result = str("guess what, you are really good")
+				total.loc[rownum, 'likemike_comment'] = result
+				print result
+			elif (row['likemike']>70 and row['likemike']<100):
+				result = str("you rock like Mike")
+				total.loc[rownum, 'likemike_comment'] = result
+				print result
+			elif (row['likemike']>100):
+				result = str("OMG!!! You have outperformed Mike")
+				total.loc[rownum, 'likemike_comment'] = result
+				print result
+
+#find_performance('diff_y', 'diff_y_a')
+column_client = str("diff_" + metric)
+column_athlete = str("diff_" + metric + "_a")
+find_performance (column_client, column_athlete)
+
+#export to csv
+
+total.to_csv(total_name)
+
+# total['diff_x'] = total['diff_x'].convert_objects(convert_numeric=True)
+# total['diff_x_a'] = total['diff_x_a'].convert_objects(convert_numeric=True)
 
 
-total.to_csv("total.csv")
+# for rownum, row in total.iterrows():
+# 	if row['diff_x_a'] != 0:
+# 		row['likemike'] = (row['diff_x']/row['diff_x_a'])*100
+# 		row['likemike'] = abs(row['likemike'])
+# 		total.loc[rownum, 'likemike'] = row['likemike']
+# 		if row['likemike'] < 20:
+# 			result = str("try harder")
+# 			total.loc[rownum, 'likemike_comment'] = result
+# 			print result
+# 		elif (row['likemike']>20 and row['likemike']<50):
+# 			result = str("you are getting there")
+# 			total.loc[rownum, 'likemike_comment'] = result
+# 			print result
+# 		elif (row['likemike']>50 and row['likemike']<70):
+# 			result = str("guess what, you are really good")
+# 			total.loc[rownum, 'likemike_comment'] = result
+# 			print result
+# 		elif (row['likemike']>70 and row['likemike']<100):
+# 			result = str("you rock like Mike")
+# 			total.loc[rownum, 'likemike_comment'] = result
+# 			print result
+# 		elif (row['likemike']<100):
+# 			result = str("OMG!!! You have outperformed Mike")
+# 			total.loc[rownum, 'likemike_comment'] = result
+# 			print result
+
+
+
+
+
 
 # os.chdir('Stats.data/stats/tennis/wta')
 
