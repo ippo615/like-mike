@@ -12,7 +12,7 @@ from tilt import Tilt
 
 def compute_score( data, dataFilename, thing, axis ):
 	#playerFilename = '%s.csv' % thing
-	#dumpToCsv( data, playerFilename )
+	dumpToCsv( data, dataFilename )
 	subprocess.call( [
 		'python',
 		'clean_data.py',
@@ -64,7 +64,8 @@ def one_round(thing='default-thing'):
 		(score,text) = compute_score(
 			samples,
 			'%s-data.csv' % thing,
-			'%s-data-combined.csv' % thing
+			thing,
+			'x'
 		)
 		# TODO: Push score to client
 		push_score( thing, score, text )
@@ -77,11 +78,11 @@ def one_round(thing='default-thing'):
 def simple_test(thing):
 	return compute_score( None, 'data-set2.csv', 'ill-fated-anger', 'x' )
 
-if __name__ == '__main__':
-	# Wait for a message
+def blah_test():
 	print simple_test( 'data-set2' )
 
-def blah():
+if __name__ == '__main__':
+	# Wait for a message
 	print 'Waiting for start...'
 	for dweet in dweepy.listen_for_dweets_from('si-hacks-2015-05-16-blah-start'):
 		print dweet
@@ -100,12 +101,9 @@ def blah():
 
 		# Tell the server that the game is over
 		dweepy.dweet_for( 'si-hacks-2015-05-16-blah-end', {
-			'stop':'now',
-			'score':score
+			'stop':'now'
 		} )
 		print 'Waiting for another start...'
 
 		#	threading.thread()
 		#	run_that_stuff()
-
-
