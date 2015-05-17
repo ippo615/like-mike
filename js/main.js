@@ -159,7 +159,7 @@ $("#postintro").click(function(){
 
         setTimeout(function(){$('#score').html("YOU'RE LIKE MIKE!")},6000);
           
-          $("#restart").show();
+         setTimeout(function() {$("#restart").show()},6000);
 
 
     
