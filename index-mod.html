@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="css/normalize.min.css">
+        <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,100" rel="styleshee" type="text/css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="icon" type="image/png" href="img/likemike.png">
+		<script src="js/smooth-scroll.js"></script>
+        <title>Like Mike</title>
+		<style type="text/css">
+			body,
+			html,
+			.container,
+			.container-left,
+			.container-right,
+			.content { 
+				padding: 0;
+				margin: 0;
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				overflow: hidden;
+				text-align: center;
+			}
+			.container-left {
+				right: 50%;
+				background-color: #FFA500;
+			}
+			.container-right {
+				top: 100%;
+				left: 50%;
+				background-color: #FFB611;
+			}
+			.container-right {
+				left: 50%;
+				background-color: #FFB611;
+			}
+			.active {
+				top: 0;
+			}
+			.content-centered {
+				display: inline-block;
+				vertical-align: center;
+			}
+			svg {
+				position: relative;
+				left: -100px;
+			}
+			.content {
+				top: 10px;
+				left: 10px;
+				bottom: 10px;
+				right: 10px;
+			}
+			.animated {
+				-webkit-transition: top 0.7s;
+			    transition: top 0.7s;
+			}
+		</style>
+    </head>
+    <body>
+		<div class="container">
+			<div class="container-left">
+				<div id="welcome-image" class="content"></div>
+			</div>
+			<div class="container-right active" id="page-1">
+				<div id="welcome-text" class="content">
+					<div id="welcome-text-1">Like Mike tells you how similar you are to the pros. Pick up your phone, open the app and give us your best freethrow to compare yourself to professional athletes.<br/><br/></div>
+					<div id="welcome-text-2">Bust out your thing (smartphone or tablet) and point it to <a href="http://dweet.io/">http://dweet.io/</a>. Then click the "Try Now" button. Your thing will be given a name. Enter it below.<br/><br/></div>
+					<div id="welcome-text-3">
+						<form>
+							<label for="url"><b>NAME OF YOUR THING</b></label><br/>
+							<input id="url" type="text" class="tb1" name="URL" /><br/></br/>
+						</form>
+					</div>
+					<div id="welcome-text-4">
+						<button id="postintro">GO!</button><br/><br/>
+					</div>
+					<div id="welcome-text-5">
+						Click GO! to play.
+					</div>
+				</div>
+			</div>
+			<div class="container-right animated" id="page-2" >
+				<div id="aboutme"></div><br/>
+				<div id="score"></div><br/>
+			</div>
+		</div>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
+		<script src="js/jquery.lazylinepainter-1.1.min.js"></script>
+		<script src="js/raphael-min.js"></script>
+		<script src="js/dweet.io.min.js"></script>
+		<script src="js/main-mod.js"></script>
+
+     </body>
+     <script>
+    //smoothScroll.init();
+     </script>
+        
+</html>
