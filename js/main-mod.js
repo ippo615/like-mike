@@ -5,6 +5,11 @@ var name;
 var url;
 var fullurl;
 var dweet;
+var chart = new SmoothieChart({maxValue:180,minValue:-180});
+var canvas = document.getElementById('smoothie-chart');
+var x_series;
+var y_series;
+var z_series;
 
 var pathObj = {
     "welcome-image": {
@@ -140,6 +145,16 @@ function collectData(url){
 	});
 }
 
+function collectTiltData(url){
+	dweetio.listen_for(url, function(dweet){
+		var date = new Date(dweet.created);
+		x_series.append(date,dweet.content.tilt_x);
+		y_series.append(date,dweet.content.tilt_y);
+		z_series.append(date,dweet.content.tilt_z);
+		//console.log(dweet.content);
+	} );
+}
+
 function startGame(){
 	//$('#page-1').removeClass('active');
 	$('#page-2').addClass('active');
@@ -158,7 +173,25 @@ function startGame(){
      	});
 	},4000);
 
+	setTimeout(function(){$('#aboutme').html("GOOD JOB!<br/>THANKS FOR PLAYING")},40000);
+
 	collectData( url+'-score' );
+
+	chart = new SmoothieChart({maxValue:180,minValue:-180});
+    canvas = document.getElementById('chart');
+	series = new TimeSeries();
+
+	canvas.width = $('#page-2').width()-20;
+	canvas.height = 128;
+
+	x_series = new TimeSeries();
+	y_series = new TimeSeries();
+	z_series = new TimeSeries();
+	chart.addTimeSeries(x_series, {lineWidth:2,strokeStyle:'#ff0000'});
+	chart.addTimeSeries(y_series, {lineWidth:2,strokeStyle:'#00ff00'});
+	chart.addTimeSeries(z_series, {lineWidth:2,strokeStyle:'#0000ff'});
+	chart.streamTo(canvas, 500);
+	collectTiltData( url );
 
     $("#restart").show();
     $("#countdown").html("RESTART"); 
