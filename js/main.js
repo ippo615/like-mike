@@ -71,11 +71,13 @@ $(document).ready(function() {
 $(document).ajaxStart(function(){
     $("#aboutme").hide();
     $("#showData").hide();
+     $("#restart").hide();
 }); // HIDE ABOUT ME TO START
 
 
 $("#postintro").click(function(){
      $("#intro").hide();
+      $("#icons").hide();
     $("#aboutme").show();
     data = $('form').serialize();
      url = $('input').val();
@@ -135,14 +137,14 @@ dweetio.listen_for(url, function(dweet){
 }
 
 
-$("#countdown").click(function(){
 
-        setTimeout(function(){$('#aboutme').html(5)},1000);
-         setTimeout(function(){$('#aboutme').html(4)},2000);
-        setTimeout(function(){$('#aboutme').html(3)},3000);
-        setTimeout(function(){$('#aboutme').html(2)},4000);
-        setTimeout(function(){$('#aboutme').html(1)},5000);
-        setTimeout(function(){$('#aboutme').html("SHOOT!")},6000);
+$("#postintro").click(function(){
+        setTimeout(function(){$('#aboutme').html("READY?")},000);
+
+        setTimeout(function(){$('#aboutme').html(3)},1000);
+         setTimeout(function(){$('#aboutme').html(2)},2000);
+        setTimeout(function(){$('#aboutme').html(1)},3000);
+        setTimeout(function(){$('#aboutme').html("SHOOT!")},4000);
         setTimeout(function(){ dweetio.dweet_for("si-hacks-2015-05-16-blah-start", {thing:url}, function(err, dweet){
 
             console.log(dweet.thing); // "my-thing"
@@ -153,7 +155,82 @@ $("#countdown").click(function(){
 
 
 
-        },6000);
+        },4000);
+
+        setTimeout(function(){$('#score').html("YOU'RE LIKE MIKE!")},6000);
+          
+          $("#restart").show();
+
+
+    
+       /* setTimeout(function(){
+            collectData();
+    }, 7000);
+         setTimeout(function(){
+            dweetio.stop_listening_for(url);
+    }, 9000);*/
+
+
+
+        
+
+
+
+
+
+
+
+       /* function makeUpdateCountdown(n){
+            return function(){
+               $("#aboutme").html(n); 
+            }
+        }
+
+        for (n = 3; n > 0; n-=1) { 
+           setTimeout(makeUpdateCountdown(n), (3-n)//*1000);
+        }
+
+        var n = 3;
+        setTimeout(function blah(){
+            $('#aboutme').html(n);
+            if( n == 0 ){ return }
+            n -= 1;
+            setTimeout(blah,1000);
+        },1000);
+
+        if(n == 0){
+            $("#aboutme").html("SHOOT!"); 
+        }
+*/
+
+    $("#countdown").html("RESTART"); 
+
+}); 
+
+
+$("#restart").click(function(){
+
+        $('#score').html("")
+        setTimeout(function(){$('#aboutme').html("READY?")},000);
+
+        setTimeout(function(){$('#aboutme').html(3)},1000);
+         setTimeout(function(){$('#aboutme').html(2)},2000);
+        setTimeout(function(){$('#aboutme').html(1)},3000);
+        setTimeout(function(){$('#aboutme').html("SHOOT!")},4000);
+        setTimeout(function(){ dweetio.dweet_for("si-hacks-2015-05-16-blah-start", {thing:url}, function(err, dweet){
+
+            console.log(dweet.thing); // "my-thing"
+            console.log(dweet.content); // The content of the dweet
+            console.log(dweet.created); // The create date of the dweet
+     });
+
+
+
+
+        },4000);
+
+        setTimeout(function(){$('#score').html("YOU'RE LIKE MIKE!")},6000);
+          
 
 
     
