@@ -52,8 +52,69 @@ for rownum, row in df.iterrows():
 	df.loc[rownum, 'second']= int(second[0])
 
 
+#group by and find average for every minute
+
+df['diff_x'] = df['diff_x'].convert_objects(convert_numeric=True)
+df['diff_y'] = df['diff_x'].convert_objects(convert_numeric=True)
+df['diff_z'] = df['diff_x'].convert_objects(convert_numeric=True)
+df['second'] = df['second'].convert_objects(convert_numeric=True)
+
+client = df.groupby(['thing', 'hour', 'minute']).mean().reset_index()
 
 
+client.to_csv('data-set1_agg.csv')
+
+
+####import athelete file
+mike = pd.read_csv('mike.csv')
+
+#merge client data with athlete
+total = pd.merge(client, mike, how='left', on=['hour', 'minute'])
+
+def find_performance(column_client, column_athlete):
+	for rownum, row in total.iterrows():
+		column_client = column_client.convert_objects(convert_numeric=True)
+		column_athlete = column_athlete.convert_objects(convert_numeric=True)
+		total['likemike'] = (column_client/column_athlete)*100
+		df.loc[rownum, 'likemike'] = total['likemike']
+
+find_performance(total['diff_x'], total['diff_x_a'])
+
+
+total['diff_x'] = total['diff_x'].convert_objects(convert_numeric=True)
+total['diff_x_a'] = total['diff_x_a'].convert_objects(convert_numeric=True)
+
+total['likemike'] = ''
+total['likemike_comment'] = ''
+
+for rownum, row in total.iterrows():
+	if row['diff_x_a'] != 0:
+		row['likemike'] = (row['diff_x']/row['diff_x_a'])*100
+		row['likemike'] = abs(row['likemike'])
+		total.loc[rownum, 'likemike'] = row['likemike']
+		if row['likemike'] < 20:
+			result = str("try harder")
+			total.loc[rownum, 'likemike_comment'] = result
+			print result
+		elif (row['likemike']>20 and row['likemike']<50):
+			result = str("you are getting there")
+			total.loc[rownum, 'likemike_comment'] = result
+			print result
+		elif (row['likemike']>50 and row['likemike']<70):
+			result = str("guess what, you are really good")
+			total.loc[rownum, 'likemike_comment'] = result
+			print result
+		elif (row['likemike']>70 and row['likemike']<100):
+			result = str("you rock like Mike")
+			total.loc[rownum, 'likemike_comment'] = result
+			print result
+		elif (row['likemike']<100):
+			result = str("OMG!!! You have outperformed Mike")
+			total.loc[rownum, 'likemike_comment'] = result
+			print result
+
+
+total.to_csv("total.csv")
 
 # os.chdir('Stats.data/stats/tennis/wta')
 
