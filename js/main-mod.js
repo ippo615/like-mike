@@ -173,11 +173,11 @@ function startGame(){
      	});
 	},4000);
 
-	setTimeout(function(){$('#aboutme').html("GOOD JOB!<br/>THANKS FOR PLAYING")},40000);
+	setTimeout(function(){$('#aboutme').html("GOOD JOB!")},40000);
 
 	collectData( url+'-score' );
 
-	chart = new SmoothieChart({maxValue:180,minValue:-180});
+	chart = new SmoothieChart({maxValue:360,minValue:-180});
     canvas = document.getElementById('chart');
 	series = new TimeSeries();
 
