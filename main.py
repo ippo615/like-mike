@@ -6,7 +6,16 @@ import dweepy
 
 from tilt import Tilt
 
+def push_score( thing, score ):
+	dweepy.dweet_for(
+		'%s-score' % thing, {
+			'score': score
+		}
+	)
+
 def one_round(thing='default-thing'):
+	score = 0
+	push_score( thing, score )
 	samples = []
 	index = 0
 	for dweet in dweepy.listen_for_dweets_from(thing):
@@ -14,6 +23,10 @@ def one_round(thing='default-thing'):
 		if tilt.isValid:
 			index += 1
 			samples.append( tilt )
+
+		# TODO: Compute score
+		# TODO: Push score to client
+		# push_score( thing, score )
 
 	print '%5i: %s' % (
 		index,
@@ -33,12 +46,19 @@ if __name__ == '__main__':
 				)
 			)
 			runner.start()
-			runner.join( 1000 )
+			runner.join( 1*60 ) # limit the round to 1 minute
 		except:
 			print 'error'
 			raise
 
+		# Tell the server that the game is over
+		dweepy.dweet_for( 'si-hacks-2015-05-16-blah-end', {
+			'stop':'now',
+			'score':score
+		} )
 		print 'Waiting for another start...'
 
 		#	threading.thread()
 		#	run_that_stuff()
+
+
