@@ -7,9 +7,11 @@ import sys
 
 
 df_name = sys.argv[1]
+metric = sys.argv[2]
 df =pd.read_csv(df_name)
 unique_clientname = (df.groupby('thing').count().reset_index())#will be used as output file name
 clientname = unique_clientname['thing'][0]
+total_name = str(clientname + "_total.csv")
 # df = pd.read_csv('data-set1.csv')
 
 
@@ -105,15 +107,19 @@ def find_performance(column_client, column_athlete):
 				result = str("you rock like Mike")
 				total.loc[rownum, 'likemike_comment'] = result
 				print result
-			elif (row['likemike']<100):
+			elif (row['likemike']>100):
 				result = str("OMG!!! You have outperformed Mike")
 				total.loc[rownum, 'likemike_comment'] = result
 				print result
 
-find_performance('diff_y', 'diff_y_a')
+#find_performance('diff_y', 'diff_y_a')
+column_client = str("diff_" + metric)
+column_athlete = str("diff_" + metric + "_a")
+find_performance (column_client, column_athlete)
 
 #export to csv
-total.to_csv("total.csv")
+
+total.to_csv(total_name)
 
 # total['diff_x'] = total['diff_x'].convert_objects(convert_numeric=True)
 # total['diff_x_a'] = total['diff_x_a'].convert_objects(convert_numeric=True)
